@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0,3,6,9,12,15,18,21 * * *' # 每3小时触发一次
-    
 
 jobs:
   run_script:
@@ -29,3 +28,13 @@ jobs:
         with:
           name: logs
           path: log # 上传log文件夹
+
+      - name: Output artifact URL
+        id: upload_artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: logs
+          path: log # 上传log文件夹
+
+      - name: Generate artifact URL
+        run: echo "Artifact URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.upload_artifact.outputs.artifact_id }}"
